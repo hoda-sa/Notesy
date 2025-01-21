@@ -12,7 +12,6 @@ import pkg from 'express-openid-connect';
 const { requiresAuth } = pkg;
 
 import Note from './models/note.js';
-import User from './models/user.js';
 
 // App Variables
 const app = express();
@@ -113,7 +112,7 @@ app.get('/notes/:id', async (req, res) => {
   res.render('notes/show', { note });
 });
 
-// route to show the edit form
+// route to show the edit form:
 app.get('/notes/:id/edit', async (req, res) => {
   const note = await Note.findById(req.params.id)
   res.render('notes/edit', { note });
@@ -152,7 +151,7 @@ app.put('/notes/:id', requiresAuth(), async (req, res) => {
   }
 });
 
-// route to dlete a note:
+// route to delete a note:
 app.delete('/notes/:id', async (req, res) => {
   const { id } = req.params;
   await Note.findByIdAndDelete(id);
