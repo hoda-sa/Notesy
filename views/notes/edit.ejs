@@ -1,0 +1,38 @@
+<%- include('../partials/header') -%>
+
+
+    <div class="container mt-5">
+        <h1 class="mb-4">
+            <%= note.title %>
+        </h1>
+
+        <form action="/notes/<%= note._id %>?_method=PUT" method="POST">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="note[title]" value="<%= note.title %>"
+                    required>
+            </div>
+
+            <div class="mb-3">
+                <label for="content" class="form-label">Your Note</label>
+                <textarea class="form-control" id="content" name="note[content]" required
+                    rows="4"><%= note.content %></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="tags" class="form-label">Tags</label>
+                <input type="text" class="form-control" id="tags" name="note[tags]" value="<%= note.tags.join(', ') %>">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update Note</button>
+        </form>
+
+        <p>
+
+        <form action="/notes/<%=note._id%>?_method=DELETE" method="POST">
+            <button class="btn btn-danger">Delete Note</button>
+        </form>
+        </p>
+    </div>
+
+    <%- include('../partials/footer') -%>
