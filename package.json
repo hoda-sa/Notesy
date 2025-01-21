@@ -3,7 +3,6 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon server.js",
-    "seed": "node seed.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

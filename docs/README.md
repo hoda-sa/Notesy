@@ -92,7 +92,6 @@ notesy/
 ## Available Scripts
 
 - `npm run dev`: Starts the development server with nodemon
-- `npm run seed`: Seeds the database with sample data
 - `npm test`: Placeholder for test suite
 
 ## Authentication
