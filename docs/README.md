@@ -57,12 +57,7 @@ AUTH0_CLIENT_ID='your-auth0-client-id'
 AUTH0_ISSUER_BASE_URL='your-auth0-domain'
 ```
 
-4. Seed the database (optional):
-```bash
-npm run seed
-```
-
-5. Start the development server:
+4. Start the development server:
 ```bash
 npm run dev
 ```
