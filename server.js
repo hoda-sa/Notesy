@@ -13,25 +13,24 @@ const { requiresAuth } = pkg;
 
 import Note from './models/note.js';
 
-// App Variables
 const app = express();
 // accessing __dirname global
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-
 dotenv.config();
-
 connectDB();
 
-
+// Setting the view engine to EJS:
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
 
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(methodOverride('_method'));
+
+
 
 const config = {
   authRequired: false,
@@ -45,32 +44,28 @@ if (!config.baseURL && !process.env.BASE_URL && process.env.PORT && process.env.
 
 app.use(auth(config));
 
-// Middleware to make the `user` object available for all views
+// Middleware to make the authenticated `user` object available for all views
 app.use(function (req, res, next) {
   res.locals.user = req.oidc.user;
   next();
 });
 
 
-
+// routes (CRUD):
 app.use('/', router);
 
-app.use(methodOverride('_method'));
-
-// routes:
-
-// see all notes by the authenticated user
+// see all notes by the authenticated user:
 app.get('/notes', async (req, res) => {
   const notes = await Note.find({ author: req.oidc.user.name });
   res.render('notes/notes', { notes });
 });
 
-// Load new note page
+// Route to Load new note page:
 app.get('/notes/new', requiresAuth(), async (req, res) => {
   res.render('notes/new');
 });
 
-// creating new notes
+// Route to create new note and save it to db:
 app.post('/notes', requiresAuth(), async (req, res) => {
   try {
     if (!req.body.note) {
@@ -79,12 +74,12 @@ app.post('/notes', requiresAuth(), async (req, res) => {
 
     const { title, tags, content } = req.body.note;
 
-    // Log the extracted values for debugging
+    // Log the extracted values from "new note form" for debugging
     console.log('Title:', title);
     console.log('Content:', content);
     console.log('Tags:', tags);
 
-
+    // Convert tags into an array:
     const tagArray = tags ? tags.split(',').map(tag => tag.trim()) : [];
 
     const note = await Note.create({
@@ -95,6 +90,7 @@ app.post('/notes', requiresAuth(), async (req, res) => {
     });
 
     res.redirect('/notes');
+
   } catch (err) {
     console.error('Error creating note:', err);
     // Send back a more user-friendly error
@@ -106,19 +102,19 @@ app.post('/notes', requiresAuth(), async (req, res) => {
 });
 
 
-// route to show one note:
+// Route to show one note:
 app.get('/notes/:id', async (req, res) => {
   const note = await Note.findById(req.params.id)
   res.render('notes/show', { note });
 });
 
-// route to show the edit form:
+// Route to show the edit form:
 app.get('/notes/:id/edit', async (req, res) => {
   const note = await Note.findById(req.params.id)
   res.render('notes/edit', { note });
 });
 
-// route to process the update:
+// Route to process the update and save the note:
 app.put('/notes/:id', requiresAuth(), async (req, res) => {
   try {
     console.log('Edit form data received:', req.body);
@@ -151,7 +147,7 @@ app.put('/notes/:id', requiresAuth(), async (req, res) => {
   }
 });
 
-// route to delete a note:
+// Route to delete a note:
 app.delete('/notes/:id', async (req, res) => {
   const { id } = req.params;
   await Note.findByIdAndDelete(id);
@@ -166,7 +162,7 @@ app.use(function (req, res, next) {
   next(err);
 });
 
-// Error handlers
+// Auth0 Error handlers
 app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
