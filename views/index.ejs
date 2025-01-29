@@ -2,13 +2,7 @@
 
     <h1 class="mb-4 text-center">Welcome to Notesy!</h1>
 
-
-
-
     <div class="container flex flex-column align-items-center">
-
-
-        <!-- <img class="img-fluid logo" src="/imgs/logo2.png" alt=""> -->
 
 
         <% if (locals.isAuthenticated) { %>
@@ -25,8 +19,7 @@
                         <a href="/notes" class="underline">
                             <img class="img-fluid logo" id="notebook" src="/imgs/notebook.png" alt="">
                         </a>
-                        <!-- <p>Go to your <a href="/notes" class="underline">Notebook</a> page to view your Notes and
-                            edit/delete them.</p> -->
+
 
                     </div>
 
@@ -46,12 +39,11 @@
                             edit, and delete notes with
                             ease. <br>
                             Sign up to access your personal collection anytime, anywhere.</p>
-                        <a href="/login" class="btn btn-lg login-btn">Start Here!</a>
+                        <a href="/login" class="btn btn-lg">Start Here!</a>
                     </div>
                 </div>
 
 
-                <!-- <p>Please login to start taking notes. <a href="/login" class="underline">Login</a>.</p> -->
                 <% } %>
 
     </div>

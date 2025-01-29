@@ -24,7 +24,7 @@ img:hover {
     /* Enhanced shadow on hover */
 }
 
-.login-btn,
+
 .btn {
     background-color: #3D5A80;
     color: #E0FBFC;
@@ -32,11 +32,21 @@ img:hover {
 }
 
 
-.login-btn:hover,
+
 .btn:hover {
     background-color: #98C1D9;
     color: white;
     border: none;
+}
+
+.btn-secondary {
+    background-color: #bcbfc3;
+    color: black
+}
+
+.btn-secondary:hover {
+    background-color: #737576;
+    color: white;
 }
 
 article a {
