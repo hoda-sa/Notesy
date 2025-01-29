@@ -131,13 +131,13 @@ app.post('/notes', requiresAuth(), async (req, res) => {
 
 
 // Route to show one note:
-app.get('/notes/:id', async (req, res) => {
+app.get('/notes/:id', requiresAuth(), async (req, res) => {
   const note = await Note.findById(req.params.id)
   res.render('notes/show', { note });
 });
 
 // Route to show the edit form:
-app.get('/notes/:id/edit', async (req, res) => {
+app.get('/notes/:id/edit', requiresAuth(), async (req, res) => {
   const note = await Note.findById(req.params.id)
   res.render('notes/edit', { note });
 });

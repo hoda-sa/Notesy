@@ -1,37 +1,27 @@
 # Notesy
 
-Notesy is a full-stack web application that allows users to create, manage, and organize their notes. Built with Express.js and MongoDB, it features secure authentication through Auth0 and a clean, responsive user interface.
+Notesy is a secure and intuitive note-taking web application built with Node.js, Express, and MongoDB. Users can create, organize, and manage their notes with tags, all protected behind secure authentication.
 
 ## Features
 
-- User authentication with Auth0
+- Secure user authentication via Auth0
 - Create, read, update, and delete notes
-- Tag-based organization system
-- Responsive design using Tailwind CSS and Bootstrap
-- Automatic timestamp tracking for note creation and updates
-- Secure user data isolation (users can only see their own notes)
+- Tag-based note organization and filtering
+- Responsive design for desktop and mobile
+- User profiles with avatar support
+- Rich text note content
 
-## Technologies Used
+## Tech Stack
 
-- **Backend:**
-  - Node.js
-  - Express.js
-  - MongoDB with Mongoose
-  - Express OpenID Connect (Auth0)
-
-- **Frontend:**
-  - EJS (Embedded JavaScript templates)
-  - Tailwind CSS
-  - Bootstrap
-  - jQuery
-
-## Prerequisites
-
-Before running this project, make sure you have:
-
-- Node.js (Latest LTS version recommended)
-- MongoDB installed and running locally
-- An Auth0 account and application set up
+- **Backend**: Node.js, Express
+- **Database**: MongoDB
+- **View Engine**: EJS
+- **Authentication**: Auth0 (express-openid-connect)
+- **Frontend**: Bootstrap, Tailwind CSS
+- **Other Tools**: 
+  - method-override for RESTful routes
+  - morgan for HTTP request logging
+  - dotenv for environment variable management
 
 ## Installation
 
@@ -46,80 +36,79 @@ cd notesy
 npm install
 ```
 
-3. Create a `.env` file in the root directory with the following variables:
-```
-PORT=3000
-BASE_URL=http://localhost:3000
-# Auth0 configuration
-AUTH0_SECRET='your-auth0-secret'
-AUTH0_BASE_URL='http://localhost:3000'
-AUTH0_CLIENT_ID='your-auth0-client-id'
-AUTH0_ISSUER_BASE_URL='your-auth0-domain'
-```
-
-4. Start the development server:
+3. Start the development server:
 ```bash
 npm run dev
 ```
 
 ## Project Structure
 
-```
-notesy/
-├── config/
-│   ├── db.js           # Database configuration
-├── models/
-│   ├── note.js         # Note model schema
-│   └── user.js         # User model schema
-├── public/
-│   ├── css/           # Stylesheets
-│   └── js/            # Client-side JavaScript
-├── routes/
-│   └── index.js       # Main route definitions
-├── views/
-│   ├── notes/         # Note-related views
-│   ├── partials/      # Reusable view components
-│   └── *.ejs          # Other view templates
-├── server.js          # Application entry point
-└── package.json
-```
-
-## Available Scripts
-
-- `npm run dev`: Starts the development server with nodemon
-- `npm test`: Placeholder for test suite
-
-## Authentication
-
-This application uses Auth0 for authentication. Users can:
-- Sign up for a new account
-- Log in with existing credentials
-- Log out
-- View their profile information
+- `/config` - Database configuration
+- `/models` - MongoDB models (Note, User)
+- `/public` - Static assets (CSS, images, client-side JS)
+- `/routes` - Express routes
+- `/views` - EJS templates
+  - `/notes` - Note-related views
+  - `/partials` - Reusable template parts
+- `server.js` - Main application file
 
 ## API Routes
 
-### Notes
-- `GET /notes` - View all notes (authenticated users only)
-- `GET /notes/new` - Display new note form
-- `POST /notes` - Create a new note
+### Authentication Routes
+- `GET /` - Home page with authentication status
+- `GET /login` - Login page (provided by Auth0)
+- `GET /logout` - Logout endpoint
+- `GET /profile` - User profile page (requires authentication)
+
+### Note Routes
+All note routes require authentication via `requiresAuth()` middleware.
+
+#### View Routes
+- `GET /notes` - Get all notes (with optional tag filtering)
+  - Query Parameters:
+    - `tag`: Filter notes by specific tag
+- `GET /notes/new` - Display new note creation form
 - `GET /notes/:id` - View a specific note
 - `GET /notes/:id/edit` - Display edit form for a note
-- `PUT /notes/:id` - Update a specific note
-- `DELETE /notes/:id` - Delete a specific note
 
-## Contributing
+#### Data Manipulation Routes
+- `POST /notes` - Create a new note
+  - Body Parameters (form data):
+    - `note[title]`: Note title
+    - `note[content]`: Note content
+    - `note[tags]`: Comma-separated tags
+- `PUT /notes/:id` - Update an existing note
+  - Body Parameters (form data):
+    - `note[title]`: Updated title
+    - `note[content]`: Updated content
+    - `note[tags]`: Updated comma-separated tags
+- `DELETE /notes/:id` - Delete a note
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+### Error Handling Routes
+- `404` - Not Found handler
+- `500` - Server Error handler with custom error pages
+
+## Features in Detail
+
+### Notes
+- Create new notes with titles, content, and tags
+- View all notes or filter by tags
+- Edit existing notes
+- Delete unwanted notes
+- Automatic timestamp tracking for updates
+
+### Authentication
+- Secure login/signup via Auth0
+- Protected routes requiring authentication
+- User profile page with avatar and details
+- Logout functionality
+
+### UI/UX
+- Responsive navigation
+- Clean, modern interface
+- Tag-based filtering system
+- Error handling with user-friendly messages
 
 ## License
 
 Copyright © 2025 Hoda Co. All rights reserved.
-
-## Support
-
-For support, please open an issue in the repository or contact the development team.
