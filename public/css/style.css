@@ -52,3 +52,12 @@ img:hover {
 article a {
     color: #3D5A80;
 }
+
+#welcome {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+#delete {
+    background-color: #EE6C4D;
+}

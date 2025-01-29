@@ -1,6 +1,8 @@
 <%- include('../partials/header') -%>
     <div class="container notebook">
-        <h1>Your Notes</h1>
+        <h1>
+            <%= user.given_name %>'s Notebook
+        </h1>
 
         <!-- Add tag filter -->
         <div class="mb-4">
@@ -13,7 +15,7 @@
                         </option>
                         <% }) %>
                 </select>
-                <button type="submit" class="btn btn-primary">Filter</button>
+                <button type="submit" class="btn btn-primary mx-1">Filter</button>
                 <% if (selectedTag) { %>
                     <a href="/notes" class="btn btn-secondary ml-2">Clear Filter</a>
                     <% } %>
@@ -22,36 +24,43 @@
 
         <hr>
 
+
         <% for(let note of notes) { %>
             <article>
-                <h4>
-                    <a href="/notes/<%= note._id %>">
-                        <%= note.title %>
-                    </a>
-                </h4>
-                <h6>Created By: <%= note.author %>
-                </h6>
-                <p>
-                    <%= note.content %>
-                </p>
-                <p>
-                    <small>
-                        Tags:
-                        <% note.tags.forEach((tag, index)=> { %>
-                            <a href="/notes?tag=<%= tag %>">
-                                <%= tag %>
-                            </a>
-                            <%= index < note.tags.length - 1 ? ', ' : '' %>
-                                <% }) %>
-                    </small>
-                    <br>
-                    <small>Updated on: <%= note.lastUpdated %></small>
-                </p>
-                <p>
-                    <a class="btn btn-primary" href="notes/<%= note._id %>/edit">Edit</a>
-                </p>
-                <hr>
+
+                <div class="card w-100 mb-3" style="width: 18rem;">
+
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="/notes/<%= note._id %>">
+                                <%= note.title %>
+                            </a></h5>
+
+                        <p class="card-text">
+                        <p>Created By: <%= note.author %>
+                        </p>
+                        <%= note.content %>
+                            </p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <small>
+                                Tags:
+                                <% note.tags.forEach((tag, index)=> { %>
+                                    <a href="/notes?tag=<%= tag %>">
+                                        <%= tag %>
+                                    </a>
+                                    <%= index < note.tags.length - 1 ? ', ' : '' %>
+                                        <% }) %>
+                            </small>
+                        </li>
+                        <li class="list-group-item">
+                            <small>Updated on: <%= note.lastUpdated %></small>
+                        </li>
+                    </ul>
+
+                </div>
             </article>
+
             <% } %>
     </div>
     <%- include('../partials/footer') -%>

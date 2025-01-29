@@ -1,28 +1,45 @@
 <%- include('../partials/header') -%>
 
-    <div class="container">
-
-        <h1>
-            <%= note.title %>
-        </h1>
-        <hr>
-        <p>
-            <small>
-                Tags: <%= note.tags %>
-            </small>
-        </p>
-
-        <p>
-            <%= note.content %>
-        </p>
 
 
-        <p> <a class="btn btn-primary" href="<%=note._id%>/edit">Edit</a>
-        </p>
-        <p> <a class="btn btn-primary" href="/notes">back to Notebook</a>
-        </p>
+    <article>
 
+        <div class="card w-100 mb-3" style="width: 18rem;">
 
-    </div>
+            <div class="card-body">
+                <h5 class="card-title"><a href="/notes/<%= note._id %>">
+                        <%= note.title %>
+                    </a></h5>
+
+                <p class="card-text">
+                <p>Created By: <%= note.author %>
+                </p>
+                <%= note.content %>
+                    </p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <small>
+                        Tags:
+                        <% note.tags.forEach((tag, index)=> { %>
+                            <a href="/notes?tag=<%= tag %>">
+                                <%= tag %>
+                            </a>
+                            <%= index < note.tags.length - 1 ? ', ' : '' %>
+                                <% }) %>
+                    </small>
+                </li>
+                <li class="list-group-item">
+                    <small>Updated on: <%= note.lastUpdated %></small>
+                </li>
+            </ul>
+
+        </div>
+    </article>
+
+    <a class="btn btn-primary mx-1" href="<%=note._id%>/edit">Edit</a>
+
+    <a class="btn btn-primary" href="/notes">Back to Notebook</a>
+
 
     <%- include('../partials/footer') -%>

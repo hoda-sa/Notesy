@@ -30,9 +30,10 @@
         <p>
 
         <form action="/notes/<%=note._id%>?_method=DELETE" method="POST">
-            <button class="btn btn-danger">Delete Note</button>
+            <button class="btn btn-danger" id="delete">Delete Note</button>
         </form>
         </p>
+        <a href="/notes">Go Back to Notebook</a>
     </div>
 
     <%- include('../partials/footer') -%>
