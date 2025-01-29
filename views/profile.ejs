@@ -1,18 +1,52 @@
 <%- include('partials/header') -%>
 
-  <h1 class="text-4xl mb-4">Welcome <%= user.given_name %>!
+  <h1 class="text-4xl mb-4">
+    <% if (user.given_name) {%>
+      Welcome <%= user.given_name %>!
+        <% } else { %>
+          Welcome Friend!
+          <% } %>
   </h1>
 
-  <% if (user.picture) { %>
-    <img class="block py-3" src="<%= user.picture %>" width="300">
-    <% } %>
+  <div class="card mb-3" style="max-width: 100%;">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <% if (user.picture) { %>
+          <img class="img-fluid rounded-start block py-3" src="<%= user.picture %>" width="300">
+          <% } else { %>
 
-      <p class="py-3">
-        This is the content of <code class="bg-gray-200">req.user</code>.<br>
-        <strong>Note:</strong> <code class="bg-gray-200">_raw</code> and <code class="bg-gray-200">_json</code>
-        properties have been omitted.
-      </p>
+            <img class="img-fluid rounded-start block py-3" src="../public/imgs/person.png" width="300">
 
-      <pre class="block bg-gray-300 p-4 text-sm overflow-scroll"><%= userProfile %></pre>
+            <% } %>
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">Your Profile:</h5>
+          <p class="card-text">
+            Name: <%= user.name %>
+          </p>
+          <p class="card-text">
+            Email: <%= user.email %>
+          </p>
+          <p class="card-text">
+            Last Login: <%= user.updated_at %>
+          </p>
 
-      <%- include('partials/footer') -%>
+          <a class="btn btn-primary" href="/notes">Go to Your Notebook</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- <p class="py-3">
+    This is the content of <code class="bg-gray-200">req.user</code>.<br>
+    <strong>Note:</strong> <code class="bg-gray-200">_raw</code> and <code class="bg-gray-200">_json</code>
+    properties have been omitted.
+  </p> -->
+
+  <!-- <pre class="block bg-gray-300 p-4 text-sm overflow-scroll"><%= userProfile %></pre> -->
+
+  <%- include('partials/footer') -%>

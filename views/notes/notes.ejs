@@ -1,7 +1,11 @@
 <%- include('../partials/header') -%>
     <div class="container notebook">
         <h1>
-            <%= user.given_name %>'s Notebook
+            <% if (user.given_name) {%>
+                <%= user.given_name %>'s Notebook
+                    <% } else { %>
+                        Your Notebook
+                        <% } %>
         </h1>
 
         <!-- Add tag filter -->

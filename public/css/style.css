@@ -24,20 +24,18 @@ img:hover {
     /* Enhanced shadow on hover */
 }
 
-
 .btn {
+    background-color: #98C1D9;
+    color: white;
+    border: none;
+}
+
+.btn:hover {
     background-color: #3D5A80;
     color: #E0FBFC;
     border: none;
 }
 
-
-
-.btn:hover {
-    background-color: #98C1D9;
-    color: white;
-    border: none;
-}
 
 .btn-secondary {
     background-color: #bcbfc3;
