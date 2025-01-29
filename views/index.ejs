@@ -1,6 +1,6 @@
 <%- include('partials/header') -%>
 
-    <h1 class="mb-4 text-center">Welcome to Notesy, Your note-taking app!</h1>
+    <h1 class="mb-4 text-center">Welcome to Notesy!</h1>
 
 
 
@@ -16,14 +16,14 @@
                 <div class="row">
                     <div class="col">
                         <a href="/notes/new" class="underline">
-                            <img class="img-fluid logo" src="/imgs/new.gif" alt="">
+                            <img class="img-fluid logo" id="create" src="/imgs/new.gif" alt="">
                         </a>
                         <!-- <p>Start with creating a <a href="/notes/new" class="underline">New Note</a>.</p> -->
 
                     </div>
                     <div class="col">
                         <a href="/notes" class="underline">
-                            <img class="img-fluid logo" src="/imgs/notebook.png" alt="">
+                            <img class="img-fluid logo" id="notebook" src="/imgs/notebook.png" alt="">
                         </a>
                         <!-- <p>Go to your <a href="/notes" class="underline">Notebook</a> page to view your Notes and
                             edit/delete them.</p> -->
@@ -33,10 +33,24 @@
                 </div>
             </div>
             </p>
+
             <% } else { %>
-                <a href="/login" class="underline">
-                    <img class="img-fluid logo" src="/imgs/login.png" alt="">
-                </a>
+
+                <div class="card text-center" style="width: 30rem;">
+
+                    <div class="card-body">
+
+                        <h5 class="card-title">What is Notesy?</h5>
+                        <p class="card-text">Effortlessly jot down your thoughts, organize ideas, and keep track of
+                            important notes—all in one place! Our secure and intuitive note-taking app lets you create,
+                            edit, and delete notes with
+                            ease. <br>
+                            Sign up to access your personal collection anytime, anywhere.</p>
+                        <a href="/login" class="btn btn-lg login-btn">Start Here!</a>
+                    </div>
+                </div>
+
+
                 <!-- <p>Please login to start taking notes. <a href="/login" class="underline">Login</a>.</p> -->
                 <% } %>
 

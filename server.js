@@ -54,10 +54,38 @@ app.use(function (req, res, next) {
 // routes (CRUD):
 app.use('/', router);
 
-// see all notes by the authenticated user:
-app.get('/notes', async (req, res) => {
-  const notes = await Note.find({ author: req.oidc.user.name });
-  res.render('notes/notes', { notes });
+
+// see all notes by the authenticated user and filter by tags:
+app.get('/notes', requiresAuth(), async (req, res) => {
+  try {
+    const selectedTag = req.query.tag;
+    let query = { author: req.oidc.user.name };
+
+    // If a tag is selected, filter by it
+    if (selectedTag) {
+      query.tags = selectedTag;
+    }
+
+    // Get all notes matching the query
+    const notes = await Note.find(query);
+
+    // Get unique tags for the filter dropdown
+    const allTags = await Note.distinct('tags', {
+      author: req.oidc.user.name
+    });
+
+    res.render('notes/notes', {
+      notes,
+      allTags,
+      selectedTag
+    });
+  } catch (err) {
+    console.error('Error fetching notes:', err);
+    res.status(500).render('error', {
+      message: 'Error fetching notes',
+      error: err
+    });
+  }
 });
 
 // Route to Load new note page:

@@ -1,7 +1,25 @@
 <%- include('../partials/header') -%>
-
     <div class="container notebook">
         <h1>Your Notes</h1>
+
+        <!-- Add tag filter -->
+        <div class="mb-4">
+            <form action="/notes" method="GET" class="form-inline flex flex-row-reverse">
+                <select name="tag" class="form-control mr-2">
+                    <option value="">All Tags</option>
+                    <% allTags.forEach(tag=> { %>
+                        <option value="<%= tag %>" <%=selectedTag===tag ? 'selected' : '' %>>
+                            <%= tag %>
+                        </option>
+                        <% }) %>
+                </select>
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <% if (selectedTag) { %>
+                    <a href="/notes" class="btn btn-secondary ml-2">Clear Filter</a>
+                    <% } %>
+            </form>
+        </div>
+
         <hr>
 
         <% for(let note of notes) { %>
@@ -10,28 +28,30 @@
                     <a href="/notes/<%= note._id %>">
                         <%= note.title %>
                     </a>
-
                 </h4>
-                <h6>
-                    Created By: <%=note.author %>
+                <h6>Created By: <%= note.author %>
                 </h6>
-
                 <p>
-
-                    <%=note.content %>
-
+                    <%= note.content %>
                 </p>
                 <p>
-                    <small>Tags: <%= note.tags %></small> <br>
-                    <small>Date Created: <%=note.dateCreated %></small>
+                    <small>
+                        Tags:
+                        <% note.tags.forEach((tag, index)=> { %>
+                            <a href="/notes?tag=<%= tag %>">
+                                <%= tag %>
+                            </a>
+                            <%= index < note.tags.length - 1 ? ', ' : '' %>
+                                <% }) %>
+                    </small>
+                    <br>
+                    <small>Updated on: <%= note.lastUpdated %></small>
                 </p>
-
-                <p> <a class="btn btn-primary" href="notes/<%=note._id%>/edit">Edit</a>
+                <p>
+                    <a class="btn btn-primary" href="notes/<%= note._id %>/edit">Edit</a>
                 </p>
                 <hr>
             </article>
             <% } %>
-
     </div>
-
     <%- include('../partials/footer') -%>
