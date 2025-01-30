@@ -47,6 +47,10 @@ img:hover {
     color: white;
 }
 
+.card {
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.2);
+}
+
 article a {
     color: #3D5A80;
 }
@@ -58,4 +62,8 @@ article a {
 
 #delete {
     background-color: #EE6C4D;
+}
+
+#small-edit {
+    color: #EE6C4D;
 }

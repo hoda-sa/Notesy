@@ -2,29 +2,40 @@
     <div class="container notebook">
         <h1>
             <% if (user.given_name) {%>
-                <%= user.given_name %>'s Notebook
+                &#128214; <%= user.given_name %>'s Notebook
                     <% } else { %>
-                        Your Notebook
+                        &#128214; Your Notebook
                         <% } %>
         </h1>
 
         <!-- Add tag filter -->
-        <div class="mb-4">
-            <form action="/notes" method="GET" class="form-inline flex flex-row-reverse">
-                <select name="tag" class="form-control mr-2">
-                    <option value="">All Tags</option>
-                    <% allTags.forEach(tag=> { %>
-                        <option value="<%= tag %>" <%=selectedTag===tag ? 'selected' : '' %>>
-                            <%= tag %>
-                        </option>
-                        <% }) %>
-                </select>
-                <button type="submit" class="btn btn-primary mx-1">Filter</button>
-                <% if (selectedTag) { %>
-                    <a href="/notes" class="btn btn-secondary ml-2">Clear Filter</a>
-                    <% } %>
-            </form>
+
+        <div class="container ">
+            <div class="row text-center align-items-center mt-4">
+                <div class="col text-left">
+                    <a href="/notes/new" class="btn btn-primary">Write a Note</a>
+                </div>
+                <div class="col">
+
+                    <form action="/notes" method="GET" class="form-inline flex flex-row-reverse">
+                        <select name="tag" class="form-control mr-2">
+                            <option value="">All Tags</option>
+                            <% allTags.forEach(tag=> { %>
+                                <option value="<%= tag %>" <%=selectedTag===tag ? 'selected' : '' %>>
+                                    <%= tag %>
+                                </option>
+                                <% }) %>
+                        </select>
+                        <button type="submit" class="btn btn-primary mx-1">Filter</button>
+                        <% if (selectedTag) { %>
+                            <a href="/notes" class="btn btn-secondary ml-2">Clear Filter</a>
+                            <% } %>
+                    </form>
+
+                </div>
+            </div>
         </div>
+
 
         <hr>
 
@@ -34,7 +45,7 @@
 
                 <div class="card w-100 mb-3" style="width: 18rem;">
 
-                    <div class="card-body">
+                    <div class="card-body pb-0 ">
                         <h5 class="card-title"><a href="/notes/<%= note._id %>">
                                 <%= note.title %>
                             </a></h5>
@@ -44,6 +55,12 @@
                         </p>
                         <%= note.content %>
                             </p>
+                            <small>
+                                <p>
+                                    <a href="notes/<%= note._id %>/edit" id="small-edit">Edit</a>
+                                </p>
+                            </small>
+
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">

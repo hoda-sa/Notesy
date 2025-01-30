@@ -14,7 +14,7 @@ const { requiresAuth } = pkg;
 import Note from './models/note.js';
 
 const app = express();
-// accessing __dirname global
+// accessing __dirname global in ES Module
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config();
 connectDB();
@@ -31,7 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
 
-
+// Auth0 Eviroment configuration
 const config = {
   authRequired: false,
   auth0Logout: true
@@ -51,11 +51,11 @@ app.use(function (req, res, next) {
 });
 
 
-// routes (CRUD):
+// All routes (CRUD):
 app.use('/', router);
 
 
-// see all notes by the authenticated user and filter by tags:
+// Route to see all notes by the authenticated user and filter by tags:
 app.get('/notes', requiresAuth(), async (req, res) => {
   try {
     const selectedTag = req.query.tag;
@@ -142,9 +142,11 @@ app.get('/notes/:id/edit', requiresAuth(), async (req, res) => {
   res.render('notes/edit', { note });
 });
 
-// Route to process the update and save the note:
+// Route to update (edit) and save the note:
 app.put('/notes/:id', requiresAuth(), async (req, res) => {
+
   try {
+    // for debugging
     console.log('Edit form data received:', req.body);
 
     if (!req.body.note) {
@@ -177,9 +179,22 @@ app.put('/notes/:id', requiresAuth(), async (req, res) => {
 
 // Route to delete a note:
 app.delete('/notes/:id', async (req, res) => {
-  const { id } = req.params;
-  await Note.findByIdAndDelete(id);
-  res.redirect('/notes');
+  try {
+    const { id } = req.params;
+
+    // Find and delete the note
+    const deletedNote = await Note.findByIdAndDelete(id);
+
+    // Check if note was found and deleted
+    if (!deletedNote) {
+      return res.status(404).json({ error: 'Note not found' });
+    }
+    res.redirect('/notes');
+
+  } catch (error) {
+    console.error('Error deleting note:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 
