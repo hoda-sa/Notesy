@@ -178,7 +178,7 @@ app.put('/notes/:id', requiresAuth(), async (req, res) => {
 });
 
 // Route to delete a note:
-app.delete('/notes/:id', async (req, res) => {
+app.delete('/notes/:id', requiresAuth(), async (req, res) => {
   try {
     const { id } = req.params;
 

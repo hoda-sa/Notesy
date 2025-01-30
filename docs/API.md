@@ -1,216 +1,231 @@
 # Notesy API Documentation
 
-## Overview
-
-The Notesy API provides programmatic access to create, read, update, and delete notes. All API endpoints require authentication using JWT (JSON Web Tokens).
-
-## Base URL
-
-```
-https://api.notesy.com/v1
-```
+Version: 1.0.0  
+Base URL: `http://localhost:3000` (development)
 
 ## Authentication
 
-The API uses JWT for authentication. Include the JWT token in the Authorization header:
+Notesy uses Auth0 for authentication. All protected endpoints require a valid session cookie obtained through Auth0 login.
 
-```
-Authorization: Bearer <your_jwt_token>
-```
+### Authentication Flow
+
+1. Users are redirected to Auth0's login page via `/login`
+2. After successful authentication, users are redirected back with a session cookie
+3. Protected endpoints check for authentication using the `requiresAuth()` middleware
 
 ## Endpoints
 
-### Get All Notes
+### Authentication
 
-```http
-GET /api/notes
+#### Get Login Page
 ```
+GET /login
+```
+Redirects to Auth0 login page.
 
-Returns all notes for the authenticated user.
+#### Logout
+```
+GET /logout
+```
+Clears the session and redirects to home page.
 
-**Response**
+#### Get User Profile
+```
+GET /profile
+```
+**Authentication Required**: Yes
+
+**Response**: Renders profile page with user information
 ```json
 {
-    "status": "success",
-    "results": 2,
-    "data": [
-        {
-            "id": "60d3b41ef682744d953ccf72",
-            "title": "Meeting Notes",
-            "content": "Discussion points...",
-            "tags": ["work", "meeting"],
-            "dateCreated": "2025-01-20T10:00:00Z",
-            "lastUpdated": "2025-01-20T10:00:00Z"
-        }
-    ]
+  "name": "string",
+  "email": "string",
+  "picture": "string (URL)",
+  "updated_at": "string (ISO date)",
+  "given_name": "string (optional)"
 }
 ```
 
-### Get Single Note
+### Notes
 
-```http
-GET /api/notes/:id
+#### List All Notes
 ```
+GET /notes
+```
+**Authentication Required**: Yes
 
-Returns a specific note by ID.
+**Query Parameters**:
+- `tag` (optional): Filter notes by specific tag
 
-**Response**
+**Response**: Renders notes page with array of note objects
 ```json
 {
-    "status": "success",
-    "data": {
-        "id": "60d3b41ef682744d953ccf72",
-        "title": "Meeting Notes",
-        "content": "Discussion points...",
-        "tags": ["work", "meeting"],
-        "dateCreated": "2025-01-20T10:00:00Z",
-        "lastUpdated": "2025-01-20T10:00:00Z"
+  "notes": [
+    {
+      "_id": "string",
+      "title": "string",
+      "content": "string",
+      "author": "string",
+      "tags": ["string"],
+      "lastUpdated": "string (ISO date)"
     }
+  ],
+  "allTags": ["string"],
+  "selectedTag": "string (optional)"
 }
 ```
 
-### Create Note
-
-```http
-POST /api/notes
+#### Create New Note Form
 ```
+GET /notes/new
+```
+**Authentication Required**: Yes
 
-Creates a new note.
+**Response**: Renders new note creation form
 
-**Request Body**
+#### Create Note
+```
+POST /notes
+```
+**Authentication Required**: Yes
+
+**Content-Type**: application/x-www-form-urlencoded
+
+**Request Body**:
 ```json
 {
-    "title": "Meeting Notes",
-    "content": "Discussion points...",
-    "tags": "work, meeting"
+  "note": {
+    "title": "string (required)",
+    "content": "string (required)",
+    "tags": "string (optional, comma-separated)"
+  }
 }
 ```
 
-**Response**
+**Response**: Redirects to /notes on success
+
+#### Get Single Note
+```
+GET /notes/:id
+```
+**Authentication Required**: Yes
+
+**URL Parameters**:
+- `id`: Note ID
+
+**Response**: Renders note detail page with note object
 ```json
 {
-    "status": "success",
-    "data": {
-        "id": "60d3b41ef682744d953ccf72",
-        "title": "Meeting Notes",
-        "content": "Discussion points...",
-        "tags": ["work", "meeting"],
-        "dateCreated": "2025-01-20T10:00:00Z",
-        "lastUpdated": "2025-01-20T10:00:00Z"
-    }
+  "note": {
+    "_id": "string",
+    "title": "string",
+    "content": "string",
+    "author": "string",
+    "tags": ["string"],
+    "lastUpdated": "string (ISO date)"
+  }
 }
 ```
 
-### Update Note
-
-```http
-PUT /api/notes/:id
+#### Get Edit Note Form
 ```
+GET /notes/:id/edit
+```
+**Authentication Required**: Yes
 
-Updates an existing note.
+**URL Parameters**:
+- `id`: Note ID
 
-**Request Body**
+**Response**: Renders note edit form with existing note data
+
+#### Update Note
+```
+PUT /notes/:id
+```
+**Authentication Required**: Yes
+
+**URL Parameters**:
+- `id`: Note ID
+
+**Content-Type**: application/x-www-form-urlencoded
+
+**Request Body**:
 ```json
 {
-    "title": "Updated Meeting Notes",
-    "content": "Updated discussion points...",
-    "tags": "work, meeting, updated"
+  "note": {
+    "title": "string (required)",
+    "content": "string (required)",
+    "tags": "string (optional, comma-separated)"
+  }
 }
 ```
 
-**Response**
-```json
-{
-    "status": "success",
-    "data": {
-        "id": "60d3b41ef682744d953ccf72",
-        "title": "Updated Meeting Notes",
-        "content": "Updated discussion points...",
-        "tags": ["work", "meeting", "updated"],
-        "dateCreated": "2025-01-20T10:00:00Z",
-        "lastUpdated": "2025-01-20T10:30:00Z"
-    }
-}
+**Response**: Redirects to /notes on success
+
+#### Delete Note
 ```
-
-### Delete Note
-
-```http
-DELETE /api/notes/:id
+DELETE /notes/:id
 ```
+**Authentication Required**: Yes
 
-Deletes a note.
+**URL Parameters**:
+- `id`: Note ID
 
-**Response**
-```json
-{
-    "status": "success",
-    "data": null
-}
-```
-
-### Get Notes by Tag
-
-```http
-GET /api/notes/tags/:tag
-```
-
-Returns all notes with a specific tag.
-
-**Response**
-```json
-{
-    "status": "success",
-    "results": 1,
-    "data": [
-        {
-            "id": "60d3b41ef682744d953ccf72",
-            "title": "Meeting Notes",
-            "content": "Discussion points...",
-            "tags": ["work", "meeting"],
-            "dateCreated": "2025-01-20T10:00:00Z",
-            "lastUpdated": "2025-01-20T10:00:00Z"
-        }
-    ]
-}
-```
+**Response**: Redirects to /notes on success
 
 ## Error Responses
 
-The API uses conventional HTTP response codes to indicate the success or failure of requests.
-
-- `200`: Success
-- `201`: Created
-- `400`: Bad Request
-- `401`: Unauthorized
-- `404`: Not Found
-- `500`: Server Error
-
-Error Response Format:
+### 404 Not Found
 ```json
 {
-    "status": "fail",
-    "error": {
-        "statusCode": 400,
-        "status": "fail"
-    },
-    "message": "Title and content are required"
+  "message": "Not Found",
+  "error": {
+    "status": 404
+  }
+}
+```
+
+### 500 Server Error
+```json
+{
+  "message": "Error message",
+  "error": {
+    "stack": "Error stack trace (development only)"
+  }
+}
+```
+
+## Data Models
+
+### Note Schema
+```json
+{
+  "_id": "ObjectId",
+  "title": "String (required)",
+  "content": "String (required)",
+  "author": "String (required)",
+  "tags": ["String"],
+  "lastUpdated": "Date (default: Date.now)",
+  "createdAt": "Date (default: Date.now)"
 }
 ```
 
 ## Rate Limiting
 
-API calls are limited to 100 requests per hour per user. The rate limit can be checked via response headers:
+Currently, there are no rate limits implemented in the API.
 
-```
-X-RateLimit-Limit: 100
-X-RateLimit-Remaining: 99
-X-RateLimit-Reset: 1611158940
-```
+## Best Practices
 
-## SDK Support
+1. Always include authentication tokens in protected routes
+2. Use appropriate HTTP methods for CRUD operations
+3. Handle errors gracefully using try-catch blocks
+4. Validate input data before processing
+5. Use tag filtering to optimize note retrieval
 
-Official SDKs are available for:
-- JavaScript/Node.js
-- Python
-- Ruby
+## Development Notes
+
+1. Set up proper environment variables in `.env` file
+2. Use development mode for detailed error messages
+3. Test authentication flow thoroughly
+4. Monitor MongoDB connections and queries
+5. Handle CORS if implementing external API access

@@ -1,11 +1,10 @@
-
 import { Router } from 'express';
 import pkg from 'express-openid-connect';
 
 const { requiresAuth } = pkg;
 const router = Router();
 
-
+// Auth0 defualt routes
 router.get('/', function (req, res, next) {
   res.render('index', {
     title: 'Auth0 Webapp sample Nodejs',
