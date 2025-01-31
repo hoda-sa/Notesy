@@ -50,10 +50,9 @@ app.use(function (req, res, next) {
   next();
 });
 
-
-// All routes (CRUD):
 app.use('/', router);
 
+// All Note Routes (CRUD):
 
 // Route to see all notes 10/page and filter by tags:
 app.get('/notes', requiresAuth(), async (req, res) => {
@@ -96,6 +95,7 @@ app.get('/notes', requiresAuth(), async (req, res) => {
     });
   } catch (err) {
     console.error('Error fetching notes:', err);
+     // Send back a more user-friendly error
     res.status(500).render('error', {
       message: 'Error fetching notes',
       error: err
