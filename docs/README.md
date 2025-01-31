@@ -28,7 +28,6 @@ Notesy is a secure and intuitive note-taking web application built with Node.js,
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd notesy
 ```
 
 2. Install dependencies:
@@ -46,7 +45,7 @@ npm run dev
 - `/config` - Database configuration
 - `/models` - MongoDB models (Note, User)
 - `/public` - Static assets (CSS, images, client-side JS)
-- `/routes` - Express routes
+- `/routes` - Auth0 routes
 - `/views` - EJS templates
   - `/notes` - Note-related views
   - `/partials` - Reusable template parts

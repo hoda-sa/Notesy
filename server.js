@@ -93,9 +93,10 @@ app.get('/notes', requiresAuth(), async (req, res) => {
       hasNextPage: page < totalPages,
       hasPrevPage: page > 1
     });
+
   } catch (err) {
     console.error('Error fetching notes:', err);
-     // Send back a more user-friendly error
+    // Send back a more user-friendly error
     res.status(500).render('error', {
       message: 'Error fetching notes',
       error: err
@@ -105,7 +106,17 @@ app.get('/notes', requiresAuth(), async (req, res) => {
 
 // Route to Load new note page:
 app.get('/notes/new', requiresAuth(), async (req, res) => {
-  res.render('notes/new');
+  try {
+    res.render('notes/new');
+
+  } catch (err) {
+
+    console.error('Error loading new note page:', err);
+    res.status(500).render('error', {
+      message: 'Unable to load new note page',
+      error: err
+    });
+  }
 });
 
 // Route to create new note and save it to db:
@@ -136,7 +147,6 @@ app.post('/notes', requiresAuth(), async (req, res) => {
 
   } catch (err) {
     console.error('Error creating note:', err);
-    // Send back a more user-friendly error
     res.status(500).render('error', {
       message: 'Error creating note',
       error: err
@@ -147,14 +157,38 @@ app.post('/notes', requiresAuth(), async (req, res) => {
 
 // Route to show one note:
 app.get('/notes/:id', requiresAuth(), async (req, res) => {
-  const note = await Note.findById(req.params.id)
-  res.render('notes/show', { note });
+
+  try {
+    const note = await Note.findById(req.params.id)
+    res.render('notes/show', { note });
+
+  } catch (err) {
+
+    console.error('Error fetching note:', err);
+    res.status(500).render('error', {
+      message: 'Unable to retrieve note',
+      error: err
+    });
+  }
+
 });
 
 // Route to show the edit form:
 app.get('/notes/:id/edit', requiresAuth(), async (req, res) => {
-  const note = await Note.findById(req.params.id)
-  res.render('notes/edit', { note });
+
+  try {
+
+    const note = await Note.findById(req.params.id)
+    res.render('notes/edit', { note });
+
+  } catch (err) {
+
+    console.error('Error fetching note for edit:', err);
+    res.status(500).render('error', {
+      message: 'Unable to load edit form',
+      error: err
+    });
+  }
 });
 
 // Route to update (edit) and save the note:
@@ -183,6 +217,7 @@ app.put('/notes/:id', requiresAuth(), async (req, res) => {
     );
 
     res.redirect('/notes');
+
   } catch (err) {
     console.error('Error updating note:', err);
     res.status(500).render('error', {
