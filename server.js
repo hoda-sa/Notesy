@@ -55,10 +55,14 @@ app.use(function (req, res, next) {
 app.use('/', router);
 
 
-// Route to see all notes by the authenticated user and filter by tags:
+// Route to see all notes 10/page and filter by tags:
 app.get('/notes', requiresAuth(), async (req, res) => {
   try {
     const selectedTag = req.query.tag;
+    const page = parseInt(req.query.page) || 1; // Get the current page from query params
+    const limit = 10; // Number of notes per page
+    const skip = (page - 1) * limit; // Calculate how many documents to skip
+
     let query = { author: req.oidc.user.name };
 
     // If a tag is selected, filter by it
@@ -66,8 +70,15 @@ app.get('/notes', requiresAuth(), async (req, res) => {
       query.tags = selectedTag;
     }
 
-    // Get all notes matching the query
-    const notes = await Note.find(query);
+    // Get total count of notes for pagination
+    const totalNotes = await Note.countDocuments(query);
+    const totalPages = Math.ceil(totalNotes / limit);
+
+    // Get paginated notes
+    const notes = await Note.find(query)
+      .sort({ lastUpdated: -1 }) // Sort by last updated, newest first
+      .skip(skip)
+      .limit(limit);
 
     // Get unique tags for the filter dropdown
     const allTags = await Note.distinct('tags', {
@@ -77,7 +88,11 @@ app.get('/notes', requiresAuth(), async (req, res) => {
     res.render('notes/notes', {
       notes,
       allTags,
-      selectedTag
+      selectedTag,
+      currentPage: page,
+      totalPages,
+      hasNextPage: page < totalPages,
+      hasPrevPage: page > 1
     });
   } catch (err) {
     console.error('Error fetching notes:', err);

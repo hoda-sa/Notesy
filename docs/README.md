@@ -92,7 +92,7 @@ All note routes require authentication via `requiresAuth()` middleware.
 
 ### Notes
 - Create new notes with titles, content, and tags
-- View all notes or filter by tags
+- View all notes or filter by tags (pagination with 10 note per page)
 - Edit existing notes
 - Delete unwanted notes
 - Automatic timestamp tracking for updates
