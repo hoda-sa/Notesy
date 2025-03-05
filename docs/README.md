@@ -34,8 +34,15 @@ git clone <repository-url>
 ```bash
 npm install
 ```
+3. Add your Auth0 account information & secret key to .env file
+```
+CLIENT_ID=
+ISSUER_BASE_URL=
+SECRET='generate your own secret string'
+PORT=3000
+```
 
-3. Start the development server:
+4. Start the development server:
 ```bash
 npm run dev
 ```
