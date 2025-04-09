@@ -34,7 +34,11 @@ app.use(methodOverride('_method'));
 // Auth0 Eviroment configuration
 const config = {
   authRequired: false,
-  auth0Logout: true
+  auth0Logout: true,
+  issuerBaseURL: process.env.ISSUER_BASE_URL,
+  clientID: process.env.CLIENT_ID,
+  secret: process.env.SECRET,
+  baseURL: process.env.BASE_URL || 'https://notesy-f333.onrender.com'
 };
 
 const port = process.env.PORT || 3000;
