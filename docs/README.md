@@ -51,6 +51,9 @@ PORT=3000
 npm run dev
 ```
 
+5. Open your browser and navigate to `http://localhost:3000`
+
+
 ## 📦 Building for Production
 
 To create a production-ready build:
