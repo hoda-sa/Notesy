@@ -2,6 +2,10 @@
 
 Notesy is a secure and intuitive note-taking web application built with Node.js, Express, and MongoDB. Users can create, organize, and manage their notes with tags, all protected behind secure authentication.
 
+## Demo
+
+Check out the live demo at: [https://www.notesy.hodaaghaei.com/](https://www.notesy.hodaaghaei.com/)
+
 ## Features
 
 - Secure user authentication via Auth0
@@ -46,6 +50,16 @@ PORT=3000
 ```bash
 npm run dev
 ```
+
+## 📦 Building for Production
+
+To create a production-ready build:
+
+```bash
+npm run build
+```
+
+This generates optimized files in the `dist` directory that can be deployed to any static hosting service.
 
 ## Project Structure
 
