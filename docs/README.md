@@ -4,7 +4,7 @@ Notesy is a secure and intuitive note-taking web application built with Node.js,
 
 ## Demo
 
-Check out the live demo: [HERE](https://www.notesy.hodaaghaei.com/)
+Check out the live demo: [HERE](https://notesy-f333.onrender.com/)
 
 ## Features
 
